@@ -6,6 +6,11 @@ import (
 	"ejercicio-2/notifications/types"
 )
 
+// Esta función se agrega como demostración que el código ya existente
+// puede seguir funcionando sin modificar su comportamiento
+// independientemente de si se le pasa la clase base (Notifier) o si
+// se le pasa un decorator que envuelva a esa clase, respetando el
+// principio de sustitución de Liskov
 func notify(notification notifications.Notifier, message string) {
 	notification.Send(message)
 }
