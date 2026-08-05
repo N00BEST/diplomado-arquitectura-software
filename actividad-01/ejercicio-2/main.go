@@ -1,21 +1,26 @@
 package main
 
 import (
+	"ejercicio-2/notifications"
 	"ejercicio-2/notifications/platforms"
 	"ejercicio-2/notifications/types"
 )
 
+func notify(notification notifications.Notifier, message string) {
+	notification.Send(message)
+}
+
 func vanillaScenario() {
 	alert := types.NewAlertNotifier()
 
-	alert.Send("sending vanilla notification")
+	notify(alert, "sending vanilla notification")
 }
 
 func singlePlatformScenario() {
 	confirmation := types.NewConfirmationNotifier()
 	web := platforms.NewWebDecorator(confirmation)
 
-	web.Send("sending notification to web")
+	notify(web, "sending notification to web")
 }
 
 func multiPlatformScenario() {
@@ -24,7 +29,7 @@ func multiPlatformScenario() {
 	mobile := platforms.NewMobileDecorator(web)
 	desktop := platforms.NewDesktopDecorator(mobile)
 
-	desktop.Send("new sign-in detected in your account")
+	notify(desktop, "new sign-in detected in your account")
 }
 
 func main() {
