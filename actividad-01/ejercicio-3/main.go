@@ -18,6 +18,7 @@ func createUsers(count int, room chat.ChatMediator) []chat.User {
 }
 
 func normalUsersScenario() {
+	fmt.Println("------ normal users scenario: ------")
 	room := rooms.NewGroupChatRoom()
 
 	users := createUsers(3, room)
@@ -32,23 +33,34 @@ func normalUsersScenario() {
 }
 
 func userJoinsAndLeavesScenario() {
+	fmt.Println("------ user joins and leaves scenario: ------")
 	room := rooms.NewGroupChatRoom()
 
-	users := createUsers(5, room)
+	users := createUsers(4, room)
 
-	for _, user := range users {
+	for i := range 3 {
+		user := users[i]
 		room.Join(user)
 	}
 
+	// El usuario 3 no se ha unido a la sala, el mensaje no se envía
 	users[3].SendMessage("Hello, everyone!")
+
+	room.Join(users[3])
+
+	users[3].SendMessage("I was talking on mute")
 	users[1].SendMessage("Sorry, I gotta go!")
 
 	room.Leave(users[1])
 
-	users[4].SendMessage("Too bad :c")
+	// El usuario 1 no debería ver este mensaje
+	users[2].SendMessage("Too bad :c")
 }
 
 func main() {
+	fmt.Println()
 	normalUsersScenario()
+	fmt.Println()
 	userJoinsAndLeavesScenario()
+	fmt.Println()
 }

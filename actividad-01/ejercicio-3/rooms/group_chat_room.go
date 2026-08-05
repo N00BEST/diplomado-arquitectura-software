@@ -16,6 +16,11 @@ func (gcr *groupChatRoom) Send(author chat.User, message string) {
 
 	currentUsername := author.Username()
 
+	// El usuario no está en la sala, no puede enviar mensajes
+	if _, exists := gcr.users[currentUsername]; !exists {
+		return
+	}
+
 	for username, user := range gcr.users {
 		if username == currentUsername {
 			continue
