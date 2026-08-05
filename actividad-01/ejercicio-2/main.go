@@ -2,43 +2,50 @@ package main
 
 import (
 	"ejercicio-2/notifications"
-	"ejercicio-2/notifications/platforms"
-	"ejercicio-2/notifications/types"
+	"ejercicio-2/platforms"
+	"fmt"
 )
 
-// Esta función se agrega como demostración que el código ya existente
-// puede seguir funcionando sin modificar su comportamiento
-// independientemente de si se le pasa la clase base (Notifier) o si
-// se le pasa un decorator que envuelva a esa clase, respetando el
-// principio de sustitución de Liskov
-func notify(notification notifications.Notifier, message string) {
-	notification.Send(message)
-}
-
-func vanillaScenario() {
-	alert := types.NewAlertNotifier()
-
-	notify(alert, "sending vanilla notification")
-}
-
 func singlePlatformScenario() {
-	confirmation := types.NewConfirmationNotifier()
-	web := platforms.NewWebDecorator(confirmation)
+	fmt.Println("------ single platform scenario: ------")
+	web := platforms.NewWebDisplayer()
+	confirmation := notifications.NewConfirmationNotifier(web)
 
-	notify(web, "sending notification to web")
+	confirmation.Send("sending notification to web")
+}
+
+func multiNotificationScenario() {
+	fmt.Println("------ multi notification scenario: ------")
+	mobile := platforms.NewMobileDisplayer()
+	warning := notifications.NewWarningNotifier(mobile)
+	message := notifications.NewMessageNotifier(mobile)
+
+	warning.Send("poor network connection detected")
+	message.Send("device is back online")
 }
 
 func multiPlatformScenario() {
-	warning := types.NewWarningNotifier()
-	web := platforms.NewWebDecorator(warning)
-	mobile := platforms.NewMobileDecorator(web)
-	desktop := platforms.NewDesktopDecorator(mobile)
+	fmt.Println("------ multi platform scenario: ------")
+	all := []platforms.Displayer{
+		platforms.NewDesktopDisplayer(),
+		platforms.NewMobileDisplayer(),
+		platforms.NewWebDisplayer(),
+	}
 
-	notify(desktop, "new sign-in detected in your account")
+	alert := notifications.NewAlertNotifier(nil)
+
+	for _, platform := range all {
+		alert.SetPlatform(platform)
+		alert.Send("new sign-in detected into your account")
+	}
 }
 
 func main() {
-	vanillaScenario()
+	fmt.Println("\n")
 	singlePlatformScenario()
+	fmt.Println("\n")
+	multiNotificationScenario()
+	fmt.Println("\n")
 	multiPlatformScenario()
+	fmt.Println("\n")
 }
