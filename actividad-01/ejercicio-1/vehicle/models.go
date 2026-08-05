@@ -19,8 +19,6 @@ type Builder interface {
 	SetSolarPanel(solarPanel bool)
 	// SetGps sets the gps to the vehicle
 	SetGps(gps bool)
-	// Build returns the object created with all parameters
-	Build() Vehicle
 }
 
 // Vehicle defines the expected behavior for vehicles

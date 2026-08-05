@@ -41,14 +41,8 @@ func (t *TruckBuilder) SetMaxLoad(maxLoad int) {
 // BuildTruck define builds the truck object
 func (t *TruckBuilder) BuildTruck() *Truck {
 	// Set default if required info were not provided
-	t.setDefaults()
+	t.BasicVehicle.ApplyDefaults()
 
 	// return built object
 	return t.Truck
-}
-
-// setDefaults assigns the default values of the truck
-func (t *TruckBuilder) setDefaults() {
-	// Set default if required info for the Vehicle were not provided
-	t.BasicVehicle.Build()
 }

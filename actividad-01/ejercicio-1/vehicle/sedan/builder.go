@@ -29,7 +29,7 @@ func NewSedanBuilder() SedanBuilder {
 // BuildSedan returns the sedan built with the provided information
 func (s *SedanBuilder) BuildSedan() *Sedan {
 	// Set default if required info for the Vehicle were not provided
-	s.BasicVehicle.Build()
+	s.BasicVehicle.ApplyDefaults()
 
 	// return built object
 	return s.Sedan

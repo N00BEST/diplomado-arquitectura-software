@@ -43,13 +43,9 @@ func (b *BasicVehicle) SetGps(gps bool) {
 	b.gps = gps
 }
 
-// Build returns the object created with all parameters
-func (b *BasicVehicle) Build() Vehicle {
-	// Set default if required info were not provided
+// ApplyDefaults assigns default values to any field that was not provided
+func (b *BasicVehicle) ApplyDefaults() {
 	b.setDefaults()
-
-	// return built object
-	return b
 }
 
 // setDefaults assign the default values of the Vehicle
