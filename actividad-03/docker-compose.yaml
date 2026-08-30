@@ -1,0 +1,24 @@
+services:
+  actividad-03-svc:
+    container_name: actividad-03-svc
+    build: .
+    depends_on:
+      - svc_mysql_db
+    environment:
+      DB_HOST: svc_mysql_db
+      DB_PASSWORD: password
+      DB_USER: root
+      DB_DATABASE: actividad-03
+      DB_PORT: "3306"
+    ports:
+      - "3000:3000"
+
+  svc_mysql_db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: actividad-03
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql-volumes/:/var/lib/mysql

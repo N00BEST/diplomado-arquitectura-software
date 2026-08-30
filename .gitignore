@@ -9,6 +9,8 @@ dist/
 *.so
 *.dylib
 
+mysql-volumes/
+
 *.test
 *.out
 *.prof
