@@ -1,0 +1,37 @@
+name: Publish Helm Chart to Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Docker Image CI"]
+    types:
+      - completed
+
+jobs:
+  publish-chart:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | helm registry login registry-1.docker.io -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Lint Chart
+        run: helm lint ./actividad-03/charts
+
+      - name: Package Chart
+        run: |
+          helm package ./actividad-03/charts \
+          --version "1.0.0-${{ github.run_number }}" \
+          --app-version "${{ github.sha }}"
+
+      - name: Push Chart to Docker Hub
+        run: helm push actividad-03-1.0.0-${{ github.run_number }}.tgz oci://registry-1.docker.io/${{ secrets.DOCKERHUB_USERNAME }}
