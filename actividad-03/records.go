@@ -12,7 +12,7 @@ import (
 
 type Record struct {
 	ID    int64  `json:"id"`
-	Value string `json:"value"`
+	Value string `json:"record_value"`
 	Size  int    `json:"size"`
 }
 
