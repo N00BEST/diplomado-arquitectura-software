@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: registry-1.docker.io
     chart: n00best/actividad-03
-    targetRevision: "1.0.0-2"
+    targetRevision: ">=1.0.0-0"
 
     helm:
       values: |
